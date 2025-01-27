@@ -9,6 +9,7 @@ import PageNotFound from "./pages/PageNotFound";
 import AppLayout from "./pages/AppLayout";
 import CityList from "./components/CityList";
 import CountryList from "./components/CountryList";
+import City from "./components/City";
 
 import { polyfillCountryFlagEmojis } from "country-flag-emoji-polyfill";
 polyfillCountryFlagEmojis();
@@ -55,6 +56,7 @@ function App() {
                             <CityList cities={cities} isLoading={isLoading} />
                         }
                     />
+                    <Route path="cities/:id" element={<City />} />
                     <Route
                         path="countries"
                         element={
