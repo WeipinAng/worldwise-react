@@ -61,6 +61,7 @@ function Map() {
 
 function ChangeCenter({ position }) {
     const map = useMap();
+    map.closePopup();
     map.setView(position);
     return null;
 }
