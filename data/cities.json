@@ -47,6 +47,18 @@
         "lat": "60.08726712402419",
         "lng": "25.048828125000004"
       }
+    },
+    {
+      "id": "f531",
+      "cityName": "Washington",
+      "country": "United States of America (the)",
+      "emoji": "🇺🇸",
+      "date": "2025-01-30T15:04:12.928Z",
+      "notes": "Strolling past the iconic monuments of Washington, D.C., I feel history come alive, with cherry blossoms gently swaying in the breeze along the Tidal Basin.",
+      "position": {
+        "lat": "38.90083119989837",
+        "lng": "-76.92626953125001"
+      }
     }
   ]
 }
