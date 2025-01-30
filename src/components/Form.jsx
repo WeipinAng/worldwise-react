@@ -7,6 +7,7 @@ import BackButton from "./BackButton";
 import Message from "./Message";
 import Spinner from "./Spinner";
 import { useUrlPosition } from "../hooks/useUrlPosition";
+import { useCities } from "../contexts/CitiesContext";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
@@ -22,6 +23,7 @@ const BASE_URL = "https://api.bigdatacloud.net/data/reverse-geocode-client";
 
 function Form() {
     const [lat, lng] = useUrlPosition();
+    const { createCity } = useCities();
 
     const [isLoadingGeocoding, setIsLoadingGeocoding] = useState(false);
     const [cityName, setCityName] = useState("");
@@ -66,6 +68,19 @@ function Form() {
 
     function handleSubmit(e) {
         e.preventDefault();
+
+        if (!cityName || !date) return;
+
+        const newCity = {
+            cityName,
+            country,
+            emoji,
+            date,
+            notes,
+            position: { lat, lng },
+        };
+
+        createCity(newCity);
     }
 
     if (isLoadingGeocoding) return <Spinner />;
