@@ -1,10 +1,4 @@
-import {
-    createContext,
-    useContext,
-    useEffect,
-    useReducer,
-    useState,
-} from "react";
+import { createContext, useContext, useEffect, useReducer } from "react";
 
 const BASE_URL = "http://localhost:9000";
 
@@ -73,6 +67,8 @@ function CitiesProvider({ children }) {
     }, []);
 
     async function getCity(id) {
+        if (id === currentCity.id) return;
+
         dispatch({ type: "loading" });
 
         try {
