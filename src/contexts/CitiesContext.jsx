@@ -11,22 +11,31 @@ const initialState = {
     error: "",
 };
 
+const ACTION_TYPES = Object.freeze({
+    LOADING: "loading",
+    CITIES_LOADED: "cities/loaded",
+    CITY_LOADED: "city/loaded",
+    CITY_CREATED: "city/created",
+    CITY_DELETED: "city/deleted",
+    REJECTED: "rejected",
+});
+
 function reducer(state, action) {
     switch (action.type) {
-        case "loading":
+        case ACTION_TYPES.LOADING:
             return { ...state, isLoading: true };
-        case "cities/loaded":
+        case ACTION_TYPES.CITIES_LOADED:
             return { ...state, isLoading: false, cities: action.payload };
-        case "city/loaded":
+        case ACTION_TYPES.CITY_LOADED:
             return { ...state, isLoading: false, currentCity: action.payload };
-        case "city/created":
+        case ACTION_TYPES.CITY_CREATED:
             return {
                 ...state,
                 isLoading: false,
                 cities: [...state.cities, action.payload],
                 currentCity: action.payload,
             };
-        case "city/deleted":
+        case ACTION_TYPES.CITY_DELETED:
             return {
                 ...state,
                 isLoading: false,
@@ -35,7 +44,7 @@ function reducer(state, action) {
                 ),
                 currentCity: {},
             };
-        case "rejected":
+        case ACTION_TYPES.REJECTED:
             return { ...state, isLoading: false, error: action.payload };
         default:
             throw new Error("Unknown action type");
@@ -50,15 +59,15 @@ function CitiesProvider({ children }) {
 
     useEffect(function () {
         async function fetchCities() {
-            dispatch({ type: "loading" });
+            dispatch({ type: ACTION_TYPES.LOADING });
 
             try {
                 const res = await fetch(`${BASE_URL}/cities`);
                 const data = await res.json();
-                dispatch({ type: "cities/loaded", payload: data });
+                dispatch({ type: ACTION_TYPES.CITIES_LOADED, payload: data });
             } catch {
                 dispatch({
-                    type: "rejected",
+                    type: ACTION_TYPES.REJECTED,
                     payload: "There was an error loading cities...",
                 });
             }
@@ -69,22 +78,22 @@ function CitiesProvider({ children }) {
     async function getCity(id) {
         if (id === currentCity.id) return;
 
-        dispatch({ type: "loading" });
+        dispatch({ type: ACTION_TYPES.LOADING });
 
         try {
             const res = await fetch(`${BASE_URL}/cities/${id}`);
             const data = await res.json();
-            dispatch({ type: "city/loaded", payload: data });
+            dispatch({ type: ACTION_TYPES.CITY_LOADED, payload: data });
         } catch {
             dispatch({
-                type: "rejected",
+                type: ACTION_TYPES.REJECTED,
                 payload: "There was an error loading the city...",
             });
         }
     }
 
     async function createCity(newCity) {
-        dispatch({ type: "loading" });
+        dispatch({ type: ACTION_TYPES.LOADING });
 
         try {
             const res = await fetch(`${BASE_URL}/cities`, {
@@ -95,26 +104,26 @@ function CitiesProvider({ children }) {
                 },
             });
             const data = await res.json();
-            dispatch({ type: "city/created", payload: data });
+            dispatch({ type: ACTION_TYPES.CITY_CREATED, payload: data });
         } catch {
             dispatch({
-                type: "rejected",
+                type: ACTION_TYPES.REJECTED,
                 payload: "There was an error creating the city...",
             });
         }
     }
 
     async function deleteCity(id) {
-        dispatch({ type: "loading" });
+        dispatch({ type: ACTION_TYPES.LOADING });
 
         try {
             await fetch(`${BASE_URL}/cities/${id}`, {
                 method: "DELETE",
             });
-            dispatch({ type: "city/deleted", payload: id });
+            dispatch({ type: ACTION_TYPES.CITY_DELETED, payload: id });
         } catch {
             dispatch({
-                type: "rejected",
+                type: ACTION_TYPES.REJECTED,
                 payload: "There was an error deleting the city...",
             });
         }
