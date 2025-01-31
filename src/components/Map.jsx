@@ -1,3 +1,11 @@
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useCities } from "../contexts/CitiesContext";
+import { useGeolocation } from "../hooks/useGeolocation";
+import { useUrlPosition } from "../hooks/useUrlPosition";
+import Button from "./Button";
+import styles from "./Map.module.css";
+
 import {
     MapContainer,
     TileLayer,
@@ -6,14 +14,6 @@ import {
     useMap,
     useMapEvents,
 } from "react-leaflet";
-
-import styles from "./Map.module.css";
-import Button from "./Button";
-import { useEffect, useState } from "react";
-import { useCities } from "../contexts/CitiesContext";
-import { useNavigate } from "react-router-dom";
-import { useGeolocation } from "../hooks/useGeolocation";
-import { useUrlPosition } from "../hooks/useUrlPosition";
 
 function Map() {
     const { cities } = useCities();
